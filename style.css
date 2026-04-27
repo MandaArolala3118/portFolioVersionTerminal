@@ -1,0 +1,144 @@
+/* --- Variables & Reset --- */
+:root {
+    --bg-color: #080a10; /* Noir bleuté très sombre */
+    --text-color: #a0b0d0; /* Gris-bleu doux */
+    --accent-color: #00f2ff; /* Cyan néon */
+    --accent-glow: rgba(0, 242, 255, 0.3);
+    --border-color: rgba(160, 176, 208, 0.2);
+    --font-mono: 'Fira Code', monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: cell; /* Curseur style visée */
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-mono);
+    height: 100vh;
+    overflow: hidden; /* Empêche le scroll global */
+    font-size: 14px;
+}
+
+/* --- Effet CRT (Scanlines + Scintillement subtil) --- */
+.crt-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+    background-size: 100% 4px;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0.15;
+}
+
+/* --- Layout Principal (Grid) --- */
+.os-container {
+    display: grid;
+    grid-template-rows: 40px 1fr 60px; /* Header fixe, Contenu variable, Nav fixe */
+    height: 100vh;
+    border: 2px solid var(--border-color);
+    margin: 10px; /* Petit espace autour de "l'écran" */
+}
+
+/* --- Header --- */
+.os-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 2px solid var(--border-color);
+    color: var(--accent-color);
+    text-shadow: 0 0 5px var(--accent-glow);
+}
+
+/* --- Zone de Contenu (Le cœur du changement) --- */
+.os-content {
+    padding: 30px;
+    overflow-y: auto; /* Scroll uniquement ici */
+    scroll-behavior: smooth;
+}
+
+/* Style pour les scrollbars dans la zone de contenu */
+.os-content::-webkit-scrollbar { width: 8px; }
+.os-content::-webkit-scrollbar-track { background: transparent; }
+.os-content::-webkit-scrollbar-thumb { background: var(--border-color); }
+
+/* Animation d'apparition du contenu */
+.content-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Types de contenu spécifiques */
+.boot-sequence p { margin-bottom: 5px; opacity: 0.7; }
+.highlight { color: var(--accent-color); text-shadow: 0 0 5px var(--accent-glow); }
+h1 { font-size: 2rem; margin-bottom: 1rem; text-transform: uppercase; }
+h2 { color: var(--accent-color); margin-top: 1.5rem; margin-bottom: 0.5rem; }
+
+/* Grille de projets/compétences */
+.data-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.data-card {
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.data-card:hover {
+    border-color: var(--accent-color);
+    background-color: rgba(0, 242, 255, 0.05);
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* --- Navigation Inférieure --- */
+.os-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-top: 2px solid var(--border-color);
+    background-color: rgba(160, 176, 208, 0.03);
+}
+
+.nav-btn {
+    background: none;
+    border: 1px solid transparent;
+    color: var(--text-color);
+    font-family: var(--font-mono);
+    padding: 10px 20px;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 5px var(--accent-glow);
+}
+
+.nav-btn.active {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    font-weight: 600;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .os-header { font-size: 10px; padding: 0 10px; }
+    .os-nav { gap: 2px; padding: 0 5px; flex-wrap: wrap;}
+    .nav-btn { padding: 5px 8px; font-size: 10px; }
+    h1 { font-size: 1.5rem; }
+}
